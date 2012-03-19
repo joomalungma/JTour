@@ -1,0 +1,27 @@
+/**
+* @version 1.0.0
+* @package RSMembership! 1.0.0
+* @copyright (C) 2009-2011 www.rsjoomla.com
+* @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+div.current input
+{
+	float: none !important;
+}
+
+div.current select
+{
+	margin-bottom: 0px !important;
+}
+
+div.current label
+{
+	float: none !important;
+	display: inline !important;
+}
+
+table.admintable tr td
+{
+	padding: 2px;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.7" method="upgrade">
+	<name>JTour</name>
+    <version>1.0.1</version>
+    <description>COM_JTOUR_XML_DESCRIPTION</description>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <author>Nikita Zonov</author>
+    <authoremail>info@joomalungma.com</authoremail>
+    <authorurl>http://joomalungma.com</authorurl>
+    <copyright>Copyright (C) 2012 Joomalungma. All rights reserved.</copyright>
+    <creationDate>March 2012</creationDate>
+	
+	<scriptfile>script.php</scriptfile>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">install.mysql.utf8.sql</file>
+			<file driver="mysql">install.mysql.nonutf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
+			<file driver="mysql">uninstall.mysql.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+		<filename>jtour.php</filename>
+		<folder>assets</folder>
+		<folder>language</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+
+	<administration>
+        <menu img="components/com_jtour/assets/images/menu_jtour.gif">jtour!</menu>
+		<submenu>
+			<menu img="components/com_jtour/assets/images/menu_overview.gif" link="option=com_jtour">COM_JTOUR_OVERVIEW</menu>
+			<menu img="components/com_jtour/assets/images/menu_configuration.gif" view="configuration">COM_JTOUR_CONFIGURATION</menu>
+		</submenu>
+        <files folder="admin">
+			<filename>install.mysql.utf8.sql</filename>
+			<filename>install.mysql.nonutf8.sql</filename>
+			<filename>uninstall.mysql.sql</filename>
+            <filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>jtour.php</filename>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>elements</folder>
+			<folder>fields</folder>
+			<folder>helpers</folder>
+			<folder>language</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+	</administration>
+	<updateservers>
+        <server type="extension" priority="1" name="COM_JTOUR">http://joomalungma.com/updatexml/com-jtour-update.xml</server>
+    </updateservers>
+</extension>
