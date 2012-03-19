@@ -1,8 +1,8 @@
 <?php
 /**
 * @version 1.0.0
-* @package DManager! 1.0.0
-* @copyright (C) 2012 http://www.pererva.su
+* @package jtour! 1.0.0
+* @copyright (C) 2012 http://joomalungma.com
 * @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
 */
 
@@ -10,22 +10,22 @@ defined('_JEXEC') or die('Restricted access');
 
 // Require the base controller
 require_once(JPATH_COMPONENT.DS.'controller.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'dmanager.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'jtour.php');
 
-DManagerHelper::readConfig();
-
+JTourHelper::readConfig();
+$input = new JInput();
 // See if this is a request for a specific controller
-$controller = JRequest::getCmd('controller');
+$controller = $input->get('controller');
 if (!empty($controller))
 {
 	require_once(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
-	$controller = 'DManagerController'.$controller;
-	$DManagerController = new $controller();
+	$controller = 'jtourController'.$controller;
+	$jtourController = new $controller();
 }
 else
-	$DManagerController = new DManagerController();
+	$jtourController = new jtourController();
 	
-$DManagerController->execute(JRequest::getCmd('task'));
+$jtourController->execute($controller = $input->get('task'));
 
 // Redirect if set
-$DManagerController->redirect();
+$jtourController->redirect();

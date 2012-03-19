@@ -10,16 +10,16 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view');
 
-class DmanagerViewDManager extends JView
+class JTourViewjtour extends JView
 {
 	function display($tpl = null)
 	{
-		JToolBarHelper::title('Domain Manager!','dmanager');
+		JToolBarHelper::title('JTour!','jtour');
 		
-		JSubMenuHelper::addEntry(JText::_('COM_DMANAGER_OVERVIEW'), 'index.php?option=com_dmanager');
-        JSubMenuHelper::addEntry(JText::_('COM_DMANAGER_DOMAINS'), 'index.php?option=com_dmanager&view=domains');
-        JSubMenuHelper::addEntry(JText::_('COM_DMANAGER_USERS'), 'index.php?option=com_dmanager&view=users');
-        JSubMenuHelper::addEntry(JText::_('COM_DMANAGER_CONFIGURATION'), 'index.php?option=com_dmanager&view=configuration');
+		JSubMenuHelper::addEntry(JText::_('COM_JTOUR_OVERVIEW'), 'index.php?option=com_jtour');
+        JSubMenuHelper::addEntry(JText::_('COM_JTOUR_DOMAINS'), 'index.php?option=com_jtour&view=domains');
+        JSubMenuHelper::addEntry(JText::_('COM_JTOUR_USERS'), 'index.php?option=com_jtour&view=users');
+        JSubMenuHelper::addEntry(JText::_('COM_JTOUR_CONFIGURATION'), 'index.php?option=com_jtour&view=configuration');
 
 		$this->assignRef('code', $this->get('code'));
 		

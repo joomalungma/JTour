@@ -1,44 +1,44 @@
 <?php
 /**
  * @version 1.0.0
- * @package DManager! 1.0.0
- * @copyright (C) 2012 http://www.pererva.su
+ * @package JTour! 1.0.0
+ * @copyright (C) 2012 http://joomalungma.com
  * @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-define('_DMANAGER_VERSION', '17');
-define('_DMANAGER_VERSION_LONG', '1.0.0');
-define('_DMANAGER_PRODUCT', 'DMANAGER!');
-define('_DMANAGER_COPYRIGHT', '&copy;2012 www.pererva.su');
-define('_DMANAGER_LICENSE', 'GPL Commercial License');
-define('_DMANAGER_AUTHOR', '<a href="http://www.pererva.su" target="_blank">www.pererva.su</a>');
+define('_JTOUR_VERSION', '17');
+define('_JTOUR_VERSION_LONG', '1.0.0');
+define('_JTOUR_PRODUCT', 'JTour');
+define('_JTOUR_COPYRIGHT', '&copy;2012 joomalungma.com');
+define('_JTOUR_LICENSE', 'GPL Commercial License');
+define('_JTOUR_AUTHOR', '<a href="http://joomalungma.com" target="_blank">Joomalungma</a>');
 
-class DManagerHelper
+class JTourHelper
 {
 	function readConfig($reload=false)
 	{
-		static $dmanager_config;
+		static $jtour_config;
 		
-		if (!is_object($dmanager_config) || $reload)
+		if (!is_object($jtour_config) || $reload)
 		{
-			$dmanager_config = new stdClass();
+			$jtour_config = new stdClass();
 			
 			$db =& JFactory::getDBO();
-			$db->setQuery("SELECT * FROM `#__dmanager_configuration`");
+			$db->setQuery("SELECT * FROM `#__jtour_configuration`");
 			$config = $db->loadObjectList();
 			if (!empty($config))
 				foreach ($config as $config_item)
-					$dmanager_config->{$config_item->name} = $config_item->value;
+					$jtour_config->{$config_item->name} = $config_item->value;
 		}
 		
-		return $dmanager_config;
+		return $jtour_config;
 	}
 	
 	function getConfig($name = null)
 	{
-		$config = DManagerHelper::readConfig();
+		$config = jtourHelper::readConfig();
 		
 		if ($name != null)
 		{
@@ -62,7 +62,7 @@ class DManagerHelper
 	{
 		$config = JFactory::getConfig();
 		
-		if (DManagerHelper::isJ16())
+		if (jtourHelper::isJ16())
 		{			
 			$config = JFactory::getConfig();
 			date_default_timezone_set($config->get('offset'));
@@ -82,10 +82,10 @@ class DManagerHelper
 	{
 		jimport('joomla.filesystem.file');
 		
-		$file = DManagerHelper::getPatchFile($type);
+		$file = jtourHelper::getPatchFile($type);
 		
 		$buffer = JFile::read($file);
-		if (strpos($buffer, 'DManagerHelper') !== false)
+		if (strpos($buffer, 'jtourHelper') !== false)
 			return true;
 			
 		return false;
@@ -95,7 +95,7 @@ class DManagerHelper
 	{
 		if ($type == 'menu')
 		{
-			if (DManagerHelper::isJ16())
+			if (jtourHelper::isJ16())
 				return JPATH_SITE.DS.'modules'.DS.'mod_menu'.DS.'helper.php';
 			else
 				return JPATH_SITE.DS.'modules'.DS.'mod_mainmenu'.DS.'helper.php';
@@ -109,10 +109,10 @@ class DManagerHelper
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		
-		$db->setQuery("SELECT `membership_id` FROM #__DMANAGER_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
+		$db->setQuery("SELECT `membership_id` FROM #__jtour_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
 		$memberships = $db->loadResultArray();
 		
-		$db->setQuery("SELECT `extras` FROM #__DMANAGER_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
+		$db->setQuery("SELECT `extras` FROM #__jtour_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
 		$extras = array();
 		$extras_array = $db->loadResultArray();
 		if (is_array($extras_array))
@@ -124,10 +124,10 @@ class DManagerHelper
 				$extras = array_merge($extras, $extra);
 			}
 		
-		$db->setQuery("SELECT `membership_id`, `params` FROM #__DMANAGER_membership_shared WHERE `type`='menu' AND `published`='1'");
+		$db->setQuery("SELECT `membership_id`, `params` FROM #__jtour_membership_shared WHERE `type`='menu' AND `published`='1'");
 		$shared = $db->loadObjectList();
 
-		$db->setQuery("SELECT `extra_value_id`, `params` FROM #__DMANAGER_extra_value_shared WHERE `type`='menu' AND `published`='1'");
+		$db->setQuery("SELECT `extra_value_id`, `params` FROM #__jtour_extra_value_shared WHERE `type`='menu' AND `published`='1'");
 		$shared2 = $db->loadObjectList();
 		if (!empty($shared2))
 			$shared = array_merge($shared, $shared2);
@@ -165,10 +165,10 @@ class DManagerHelper
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		
-		$db->setQuery("SELECT `membership_id` FROM #__DMANAGER_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
+		$db->setQuery("SELECT `membership_id` FROM #__jtour_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
 		$memberships = $db->loadResultArray();
 			
-		$db->setQuery("SELECT `extras` FROM #__DMANAGER_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
+		$db->setQuery("SELECT `extras` FROM #__jtour_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
 		$extras = array();
 		$extras_array = $db->loadResultArray();
 		if (is_array($extras_array))
@@ -180,12 +180,12 @@ class DManagerHelper
 				$extras = array_merge($extras, $extra);
 			}
 		
-		$db->setQuery("SELECT `membership_id`, `params` FROM #__DMANAGER_membership_shared WHERE `type`='module' AND `published`='1'");
+		$db->setQuery("SELECT `membership_id`, `params` FROM #__jtour_membership_shared WHERE `type`='module' AND `published`='1'");
 		$shared = $db->loadObjectList();
 		if (empty($shared))
 			$shared = array();
 		
-		$db->setQuery("SELECT `extra_value_id`, `params` FROM #__DMANAGER_extra_value_shared WHERE `type`='module' AND `published`='1'");
+		$db->setQuery("SELECT `extra_value_id`, `params` FROM #__jtour_extra_value_shared WHERE `type`='module' AND `published`='1'");
 		$shared2 = $db->loadObjectList();
 		if (!empty($shared2))
 			$shared = array_merge($shared, $shared2);
@@ -208,7 +208,7 @@ class DManagerHelper
 		}
 		
 		if ($not_allowed)
-			return (!DManagerHelper::isJ16() ? " AND" : "")." m.id NOT IN (".implode(',', $not_allowed).")";
+			return (!jtourHelper::isJ16() ? " AND" : "")." m.id NOT IN (".implode(',', $not_allowed).")";
 		
 		return '';
 	}
@@ -217,10 +217,10 @@ class DManagerHelper
 	{
 		$price = number_format($price, 2, '.', '');
 		
-		$format    = DManagerHelper::getConfig('price_format');
+		$format    = jtourHelper::getConfig('price_format');
 		if (!$currency)
-			$currency  = DManagerHelper::getConfig('currency');
-		$show_free = DManagerHelper::getConfig('price_show_free');
+			$currency  = jtourHelper::getConfig('currency');
+		$show_free = jtourHelper::getConfig('price_show_free');
 		
 		if ($show_free && (empty($price) || $price == '0.00'))
 			return JText::_('RSM_FREE');
@@ -230,10 +230,10 @@ class DManagerHelper
 	
 	function genKeyCode()
 	{
-		$code = DManagerHelper::getConfig('global_register_code');
+		$code = jtourHelper::getConfig('global_register_code');
 		if ($code === false)
 			$code = '';
-		return md5($code._DMANAGER_KEY);
+		return md5($code._JTOUR_KEY);
 	}
 	
 	function createThumb($src, $dest, $thumb_w, $type='jpg')
@@ -304,13 +304,13 @@ class DManagerHelper
 		$return = new stdClass();
 		
 		$return->memberships = array();
-		$this->_db->setQuery("SELECT `id`, `name` FROM #__DMANAGER_memberships");
+		$this->_db->setQuery("SELECT `id`, `name` FROM #__jtour_memberships");
 		$result = $this->_db->loadObjectList();
 		foreach ($result as $row)
 			$return->memberships[$row->id] = $row->name;
 		
 		$return->extra_values = array();
-		$this->_db->setQuery("SELECT `id`, `name` FROM #__DMANAGER_extra_values");
+		$this->_db->setQuery("SELECT `id`, `name` FROM #__jtour_extra_values");
 		$result = $this->_db->loadObjectList();
 		foreach ($result as $row)
 			$return->extra_values[$row->id] = $row->name;
@@ -320,25 +320,25 @@ class DManagerHelper
 	
 	function sendExpirationEmails()
 	{
-		DManagerHelper::readConfig();
+		jtourHelper::readConfig();
 		
 		$db = JFactory::getDBO();
 		
 		// Check the last time this has been run
-		$now = DManagerHelper::getCurrentDate();
-		if ($now < DManagerHelper::getConfig('expire_last_run') + DManagerHelper::getConfig('expire_check_in')*60)
+		$now = jtourHelper::getCurrentDate();
+		if ($now < jtourHelper::getConfig('expire_last_run') + jtourHelper::getConfig('expire_check_in')*60)
 			return;
 		
-		$db->setQuery("UPDATE #__DMANAGER_configuration SET `value`='".$now."' WHERE `name`='expire_last_run'");
+		$db->setQuery("UPDATE #__jtour_configuration SET `value`='".$now."' WHERE `name`='expire_last_run'");
 		$db->query();
 		
 		// Get custom fields
-		$db->setQuery("SELECT id, name FROM #__DMANAGER_fields WHERE published='1' ORDER BY ordering");
+		$db->setQuery("SELECT id, name FROM #__jtour_fields WHERE published='1' ORDER BY ordering");
 		$fields = $db->loadObjectList();
 		
 		// Get expiration intervals and memberships
 		// Performance check - if no emails can be sent, no need to grab the membership
-		$db->setQuery("SELECT * FROM #__DMANAGER_memberships WHERE (`user_email_from_addr`!='' OR `user_email_use_global`='1' OR `admin_email_to_addr` != '') AND published='1'");
+		$db->setQuery("SELECT * FROM #__jtour_memberships WHERE (`user_email_from_addr`!='' OR `user_email_use_global`='1' OR `admin_email_to_addr` != '') AND published='1'");
 		$memberships = $db->loadObjectList();
 		
 		$date = JFactory::getDate();
@@ -346,7 +346,7 @@ class DManagerHelper
 		foreach ($memberships as $membership)
 		{
 			// Select all the subscriptions that match (about to expire)
-			$db->setQuery("SELECT u.id AS user_id, u.email AS user_email, u.name AS user_name, u.username AS user_username, mu.id AS muid, mu.extras, mu.membership_end FROM #__DMANAGER_membership_users mu LEFT JOIN #__users u ON (mu.user_id=u.id) WHERE mu.`status`='0' AND mu.`notified`='0' AND mu.membership_end > 0 AND mu.`membership_end` < '".($date->toUnix() + $membership->expire_notify_interval*86400)."' AND mu.`membership_id`='".$membership->id."' LIMIT ".(int) DManagerHelper::getConfig('expire_emails'));
+			$db->setQuery("SELECT u.id AS user_id, u.email AS user_email, u.name AS user_name, u.username AS user_username, mu.id AS muid, mu.extras, mu.membership_end FROM #__jtour_membership_users mu LEFT JOIN #__users u ON (mu.user_id=u.id) WHERE mu.`status`='0' AND mu.`notified`='0' AND mu.membership_end > 0 AND mu.`membership_end` < '".($date->toUnix() + $membership->expire_notify_interval*86400)."' AND mu.`membership_id`='".$membership->id."' LIMIT ".(int) jtourHelper::getConfig('expire_emails'));
 			$results = $db->loadObjectList();
 			if (empty($results)) continue;
 			
@@ -356,14 +356,14 @@ class DManagerHelper
 				// Performance check
 				if ($result->extras && (strpos($membership->user_email_expire_text.$membership->user_email_expire_subject, '{extras}') !== false || strpos($membership->admin_email_expire_text.$membership->admin_email_expire_subject, '{extras}') !== false))
 				{
-					$db->setQuery("SELECT `name` FROM #__DMANAGER_extra_values WHERE `id` IN (".$result->extras.")");
+					$db->setQuery("SELECT `name` FROM #__jtour_extra_values WHERE `id` IN (".$result->extras.")");
 					$extras = implode(', ', $db->loadResultArray());
 				}
 				
 				$replace = array('{membership}', '{extras}', '{email}', '{name}', '{username}', '{interval}');
 				$with = array($membership->name, $extras, $result->user_email, $result->user_name, $result->user_username, ceil(($result->membership_end - $date->toUnix())/86400));
 				
-				$db->setQuery("SELECT * FROM #__DMANAGER_users WHERE user_id='".(int) $result->user_id."'");
+				$db->setQuery("SELECT * FROM #__jtour_users WHERE user_id='".(int) $result->user_id."'");
 				$user_data_tmp = $db->loadObject();
 				
 				$user_data = array();
@@ -406,7 +406,7 @@ class DManagerHelper
 					// bcc
 					$bcc = null;
 					// attachments
-					$db->setQuery("SELECT `path` FROM #__DMANAGER_membership_attachments WHERE `membership_id`='".$membership->id."' AND `email_type`='user_email_expire' AND `published`='1' ORDER BY `ordering`");
+					$db->setQuery("SELECT `path` FROM #__jtour_membership_attachments WHERE `membership_id`='".$membership->id."' AND `email_type`='user_email_expire' AND `published`='1' ORDER BY `ordering`");
 					$attachment = $db->loadResultArray();
 					// reply to
 					$replyto = $from;
@@ -454,7 +454,7 @@ class DManagerHelper
 		
 		if (!empty($update_ids))
 		{
-			$db->setQuery("UPDATE #__DMANAGER_membership_users SET `notified`='1' WHERE id IN (".implode(',', $update_ids).")");
+			$db->setQuery("UPDATE #__jtour_membership_users SET `notified`='1' WHERE id IN (".implode(',', $update_ids).")");
 			$db->query();
 		}
 	}
@@ -473,7 +473,7 @@ class DManagerHelper
 		
 		if (!$user->get('guest'))
 		{
-			$db->setQuery("SELECT `membership_id`, `extras` FROM #__DMANAGER_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
+			$db->setQuery("SELECT `membership_id`, `extras` FROM #__jtour_membership_users WHERE `user_id`='".$user->get('id')."' AND `status`='0'");
 			$results = $db->loadObjectList();
 			
 			if ($results)
@@ -508,10 +508,10 @@ class DManagerHelper
 		if ($search)
 			$where .= " AND s.`params` LIKE '".$db->getEscaped($search)."'";
 		
-		$db->setQuery("SELECT s.`membership_id`, s.`params`, s.`type` FROM #__DMANAGER_membership_shared s LEFT JOIN #__DMANAGER_memberships m ON (s.membership_id=m.id) WHERE $where AND s.`published`='1' AND m.published='1'");
+		$db->setQuery("SELECT s.`membership_id`, s.`params`, s.`type` FROM #__jtour_membership_shared s LEFT JOIN #__jtour_memberships m ON (s.membership_id=m.id) WHERE $where AND s.`published`='1' AND m.published='1'");
 		$shared = $db->loadObjectList();
 		
-		$db->setQuery("SELECT s.`extra_value_id`, s.`params`, s.`type` FROM #__DMANAGER_extra_value_shared s LEFT JOIN #__DMANAGER_extra_values v ON (s.extra_value_id=v.id) WHERE $where AND s.`published`='1' AND v.published='1'");
+		$db->setQuery("SELECT s.`extra_value_id`, s.`params`, s.`type` FROM #__jtour_extra_value_shared s LEFT JOIN #__jtour_extra_values v ON (s.extra_value_id=v.id) WHERE $where AND s.`published`='1' AND v.published='1'");
 		$shared2 = $db->loadObjectList();
 		if (!empty($shared2))
 			$shared = array_merge($shared, $shared2);
@@ -524,20 +524,20 @@ class DManagerHelper
 		// Get the database object
 		$db =& JFactory::getDBO();
 		
-		$shared = DManagerHelper::getShared(array('article', 'category'));
+		$shared = jtourHelper::getShared(array('article', 'category'));
 		
 		$view = JRequest::getVar('view');
 		$id   = JRequest::getInt('id');
 		
 		if ($view == 'article')
 		{
-			$categories = DManagerHelper::_getItemCategories($id);
+			$categories = jtourHelper::_getItemCategories($id);
 			
 			foreach ($shared as $share)
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 					
 				if (($share->type == 'article' && $share->params == $id) || ($share->type == 'category' && in_array($share->params, $categories)))
 				{
@@ -560,14 +560,14 @@ class DManagerHelper
 		}
 		elseif ($view == 'category')
 		{
-			$categories = DManagerHelper::_getCategoryParents($id);
+			$categories = jtourHelper::_getCategoryParents($id);
 			array_push($categories, $id);
 			
 			foreach ($shared as $share)
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 					
 				if ($share->type == 'category' && in_array($share->params, $categories))
 				{
@@ -597,7 +597,7 @@ class DManagerHelper
 		
 		$db->setQuery("SELECT `catid` FROM #__content WHERE `id`='".(int) $id."'");
 		$catid = $db->loadResult();
-		$categories = DManagerHelper::_getCategoryParents($catid);
+		$categories = jtourHelper::_getCategoryParents($catid);
 		array_push($categories, $catid);
 		
 		return $categories;
@@ -621,13 +621,13 @@ class DManagerHelper
 	
 	function checkContent(&$has_access, &$found_shared, &$redirect, $memberships, $extras)
 	{
-		if (DManagerHelper::isJ16())
-			return DManagerHelper::checkContentJ16($has_access, $found_shared, $redirect, $memberships, $extras);
+		if (jtourHelper::isJ16())
+			return jtourHelper::checkContentJ16($has_access, $found_shared, $redirect, $memberships, $extras);
 		
 		// Get the database object
 		$db =& JFactory::getDBO();
 		
-		$shared = DManagerHelper::getShared(array('article', 'category', 'section'));
+		$shared = jtourHelper::getShared(array('article', 'category', 'section'));
 		
 		$view = JRequest::getVar('view');
 		$id   = JRequest::getInt('id');
@@ -642,7 +642,7 @@ class DManagerHelper
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 					
 				if (($share->type == 'article' && $share->params == $id) || ($share->type == 'category' && $share->params == $content->catid) || ($share->type == 'section' && $share->params == $content->sectionid))
 				{
@@ -673,7 +673,7 @@ class DManagerHelper
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 					
 				if (($share->type == 'category' && $share->params == $id) || ($share->type == 'section' && $share->params == $sectionid))
 				{
@@ -700,7 +700,7 @@ class DManagerHelper
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 					
 				if ($share->type == 'section' && $share->params == $id)
 				{
@@ -725,10 +725,10 @@ class DManagerHelper
 	
 	function checkURL(&$has_access, &$found_shared, &$redirect, $memberships, $extras)
 	{
-		$option    = DManagerHelper::getOption();
+		$option    = jtourHelper::getOption();
 		$mainframe =& JFactory::getApplication();
 		$type      = $mainframe->isAdmin() ? 'backendurl' : 'frontendurl';
-		$shared    = DManagerHelper::getShared($type, $option.'%');
+		$shared    = jtourHelper::getShared($type, $option.'%');
 		
 		// Get the database object
 		$db =& JFactory::getDBO();
@@ -738,9 +738,9 @@ class DManagerHelper
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 						
-				$query = DManagerHelper::parseQuery($share->params);
+				$query = jtourHelper::parseQuery($share->params);
 					
 				$current_query = array();
 				foreach ($query as $q => $value)
@@ -751,7 +751,7 @@ class DManagerHelper
 				}
 				$current_query = $option.(!empty($current_query) ? '&'.implode('&', $current_query) : '');
 				
-				if ($current_query == $share->params || DManagerHelper::_is_match($current_query, $share->params))
+				if ($current_query == $share->params || jtourHelper::_is_match($current_query, $share->params))
 				{
 					$found_shared = true;
 					
@@ -775,7 +775,7 @@ class DManagerHelper
 		$mainframe =& JFactory::getApplication();
 		$Itemid    = JRequest::getInt('Itemid');
 		$type      = $mainframe->isAdmin() ? 'backendurl' : 'frontendurl';
-		$shared    = DManagerHelper::getShared('menu', $Itemid);
+		$shared    = jtourHelper::getShared('menu', $Itemid);
 		
 		// Get the database object
 		$db =& JFactory::getDBO();
@@ -785,7 +785,7 @@ class DManagerHelper
 			{
 				$what  = isset($share->membership_id) ? 'membership_id' : 'extra_value_id';
 				$where = isset($share->membership_id) ? $memberships : $extras;
-				$table = isset($share->membership_id) ? '#__DMANAGER_memberships' : '#__DMANAGER_extra_values';
+				$table = isset($share->membership_id) ? '#__jtour_memberships' : '#__jtour_extra_values';
 						
 				if ($share->params == $Itemid)
 				{
@@ -813,7 +813,7 @@ class DManagerHelper
 	
 	function checkShared()
 	{
-		$option = DManagerHelper::getOption();
+		$option = jtourHelper::getOption();
 		if (!$option)
 			return;
 		
@@ -821,13 +821,13 @@ class DManagerHelper
 		
 		// Get the language
 		$lang =& JFactory::getLanguage();
-		$lang->load('com_DMANAGER');
+		$lang->load('com_jtour');
 		$msg = JText::_('RSM_MEMBERSHIP_NEED_SUBSCRIPTION');
 		
 		// Get the database object
 		$db = JFactory::getDBO();
 
-		list($memberships, $extras) = DManagerHelper::getUserSubscriptions();
+		list($memberships, $extras) = jtourHelper::getUserSubscriptions();
 		
 		$has_access   = false;
 		$found_shared = false;
@@ -836,18 +836,18 @@ class DManagerHelper
 		if (!$mainframe->isAdmin())
 		{
 			// Check the articles, categories and sections
-			if ($option == 'com_content') DManagerHelper::checkContent($has_access, $found_shared, $redirect, $memberships, $extras);
+			if ($option == 'com_content') jtourHelper::checkContent($has_access, $found_shared, $redirect, $memberships, $extras);
 			// Menu - Itemid
-			DManagerHelper::checkMenu($has_access, $found_shared, $redirect, $memberships, $extras);
+			jtourHelper::checkMenu($has_access, $found_shared, $redirect, $memberships, $extras);
 		}
 		
-		$instances = DMANAGER::getSharedContentPlugins();
+		$instances = jtour::getSharedContentPlugins();
 		foreach ($instances as $instance)
 			if (method_exists($instance, 'checkShared'))
 				$instance->checkShared($option, $has_access, $found_shared, $redirect, $memberships, $extras);
 		
 		// Custom URL
-		DManagerHelper::checkURL($has_access, $found_shared, $redirect, $memberships, $extras);
+		jtourHelper::checkURL($has_access, $found_shared, $redirect, $memberships, $extras);
 		
 		if (!$found_shared)
 			$has_access = true;
@@ -861,7 +861,7 @@ class DManagerHelper
 	
 	function _is_match($url, $pattern)
 	{
-		$pattern = DManagerHelper::_transform_string($pattern);	
+		$pattern = jtourHelper::_transform_string($pattern);	
 		preg_match_all($pattern, $url, $matches);
 		
 		return (!empty($matches[0]));
@@ -927,12 +927,12 @@ class DManagerHelper
 			case 'hidden':
 				$name = 'rsm_fields['.$field->name.']';
 				
-				$field->values = DManagerHelper::isCode($field->values);
+				$field->values = jtourHelper::isCode($field->values);
 				$return[1] = '<input type="hidden" name="'.$name.'" id="rsm_'.$field->name.'" value="'.htmlspecialchars($field->values, ENT_COMPAT, 'utf-8').'" />';
 			break;
 			
 			case 'freetext':
-				$field->values = DManagerHelper::isCode($field->values);
+				$field->values = jtourHelper::isCode($field->values);
 				$return[1] = $field->values;
 			break;
 			
@@ -940,7 +940,7 @@ class DManagerHelper
 				if (isset($selected[$field->name]))
 					$field->values = $selected[$field->name];
 				else
-					$field->values = DManagerHelper::isCode($field->values);
+					$field->values = jtourHelper::isCode($field->values);
 				
 				$name = 'rsm_fields['.$field->name.']';
 				
@@ -954,7 +954,7 @@ class DManagerHelper
 				if (isset($selected[$field->name]))
 					$field->values = $selected[$field->name];
 				else
-					$field->values = DManagerHelper::isCode($field->values);
+					$field->values = jtourHelper::isCode($field->values);
 				
 				$name = 'rsm_fields['.$field->name.']';
 				
@@ -966,7 +966,7 @@ class DManagerHelper
 			
 			case 'select':
 			case 'multipleselect':
-				$field->values = DManagerHelper::isCode($field->values);
+				$field->values = jtourHelper::isCode($field->values);
 				$field->values = str_replace("\r\n", "\n", $field->values);
 				$field->values = explode("\n", $field->values);
 				
@@ -1008,7 +1008,7 @@ class DManagerHelper
 			break;
 			
 			case 'checkbox':
-				$field->values = DManagerHelper::isCode($field->values);
+				$field->values = jtourHelper::isCode($field->values);
 				$field->values = str_replace("\r\n", "\n", $field->values);
 				$field->values = explode("\n", $field->values);
 				
@@ -1046,7 +1046,7 @@ class DManagerHelper
 			break;
 			
 			case 'radio':
-				$field->values = DManagerHelper::isCode($field->values);
+				$field->values = jtourHelper::isCode($field->values);
 				$field->values = str_replace("\r\n", "\n", $field->values);
 				$field->values = explode("\n", $field->values);
 				
@@ -1078,12 +1078,12 @@ class DManagerHelper
 				if (isset($selected[$field->name]))
 					$field->values = $selected[$field->name];
 				else
-					$field->values = DManagerHelper::isCode($field->values);
+					$field->values = jtourHelper::isCode($field->values);
 					
 				$name = 'rsm_fields['.$field->name.']';
 				
-				$format = DManagerHelper::getConfig('date_format');
-				$format = DManagerHelper::getCalendarFormat($format);
+				$format = jtourHelper::getConfig('date_format');
+				$format = jtourHelper::getCalendarFormat($format);
 				
 				if ($editable)
 					$return[1] = JHTML::_('calendar', $field->values, $name, 'rsm_'.$field->name, $format, $field->additional); 
@@ -1119,10 +1119,10 @@ class DManagerHelper
 		$return = array();
 		
 		$db = JFactory::getDBO();
-		$db->setQuery("SELECT * FROM #__DMANAGER_users WHERE user_id='".(int) $user_id."'");
+		$db->setQuery("SELECT * FROM #__jtour_users WHERE user_id='".(int) $user_id."'");
 		$result = $db->loadObject();
 		
-		$db->setQuery("SELECT id, name FROM #__DMANAGER_fields WHERE published='1' ORDER BY ordering");
+		$db->setQuery("SELECT id, name FROM #__jtour_fields WHERE published='1' ORDER BY ordering");
 		$fields = $db->loadObjectList();
 		foreach ($fields as $field)
 		{
@@ -1151,12 +1151,12 @@ class DManagerHelper
 			
 		$post = JRequest::getVar('rsm_fields', array(), 'post');
 		
-		$db->setQuery("SELECT * FROM #__DMANAGER_fields WHERE published='1' ORDER BY ordering");
+		$db->setQuery("SELECT * FROM #__jtour_fields WHERE published='1' ORDER BY ordering");
 		$fields = $db->loadObjectList();
 		
 		if (!$post && !$guest)
 		{
-			$db->setQuery("SELECT * FROM #__DMANAGER_users WHERE user_id='".$user->get('id')."'");
+			$db->setQuery("SELECT * FROM #__jtour_users WHERE user_id='".$user->get('id')."'");
 			$data = $db->loadObject();
 			
 			if ($data)
@@ -1178,7 +1178,7 @@ class DManagerHelper
 		}
 		
 		foreach ($fields as $field)
-			$return[] = DManagerHelper::showCustomField($field, $post, $editable, $show_required);		
+			$return[] = jtourHelper::showCustomField($field, $post, $editable, $show_required);		
 		
 		return $return;
 	}
@@ -1187,7 +1187,7 @@ class DManagerHelper
 	{
 		$return = array();
 		$db = JFactory::getDBO();
-		$db->setQuery("SELECT * FROM #__DMANAGER_fields WHERE published='1' AND required = '1' ORDER BY ordering");
+		$db->setQuery("SELECT * FROM #__jtour_fields WHERE published='1' AND required = '1' ORDER BY ordering");
 		$fields = $db->loadObjectList();
 		foreach ($fields as $field)
 		{
@@ -1206,7 +1206,7 @@ class DManagerHelper
 				
 				case 'checkbox':
 				case 'radio':
-					$field->values = DManagerHelper::isCode($field->values);
+					$field->values = jtourHelper::isCode($field->values);
 					$field->values = str_replace("\r\n", "\n", $field->values);
 					$field->values = explode("\n", $field->values);
 
@@ -1241,7 +1241,7 @@ class DManagerHelper
 	function calculateFixedDate($membership)
 	{
 		$date  = JFactory::getDate();
-		$now   = DManagerHelper::getCurrentDate();
+		$now   = jtourHelper::getCurrentDate();
 		$day   = $membership->fixed_day;
 		$month = $membership->fixed_month;
 		$year  = $membership->fixed_year;
@@ -1297,7 +1297,7 @@ class DManagerHelper
 	}
 }
 
-class DMANAGER
+class jtour
 {
 	var $_plugins = array();
 	
@@ -1312,13 +1312,13 @@ class DMANAGER
 			$dispatcher =& JDispatcher::getInstance();
 		
 			// Get plugins		
-			JPluginHelper::importPlugin('DMANAGER');
-			$plugins = JPluginHelper::getPlugin('DMANAGER');
+			JPluginHelper::importPlugin('jtour');
+			$plugins = JPluginHelper::getPlugin('jtour');
 			foreach($plugins as $plugin)
 			{
-				JPluginHelper::importPlugin('DMANAGER', $plugin->name, false);
+				JPluginHelper::importPlugin('jtour', $plugin->name, false);
 
-				$className = 'plgDMANAGER'.$plugin->name;
+				$className = 'plgjtour'.$plugin->name;
 				if(class_exists($className))
 					$instances[] = new $className($dispatcher, (array)$plugin);
 			}
@@ -1343,35 +1343,35 @@ class DMANAGER
 		$log = implode("\n", $log);
 		
 		if ($append)
-			$db->setQuery("UPDATE #__DMANAGER_transactions SET `response_log` = CONCAT(`response_log`,'".$db->getEscaped("\n".$log)."') WHERE `id`='".(int) $id."'");
+			$db->setQuery("UPDATE #__jtour_transactions SET `response_log` = CONCAT(`response_log`,'".$db->getEscaped("\n".$log)."') WHERE `id`='".(int) $id."'");
 		else
-			$db->setQuery("UPDATE #__DMANAGER_transactions SET `response_log`='".$db->getEscaped($log)."' WHERE `id`='".(int) $id."'");
+			$db->setQuery("UPDATE #__jtour_transactions SET `response_log`='".$db->getEscaped($log)."' WHERE `id`='".(int) $id."'");
 			
 		return $db->query();
 	}
 	
-	function DMANAGER()
+	function jtour()
 	{
 		return true;
 	}
 	
 	function addPlugin($name, $filename)
 	{
-		$instance =& DMANAGER::getInstance();
+		$instance =& jtour::getInstance();
 		
 		$instance->_plugins[$filename] = $name;
 	}
 	
 	function getPlugins()
 	{
-		$instance =& DMANAGER::getInstance();
+		$instance =& jtour::getInstance();
 		
 		return $instance->_plugins;
 	}
 	
 	function getPlugin($name)
 	{
-		$instance =& DMANAGER::getInstance();
+		$instance =& jtour::getInstance();
 		
 		if (!empty($instance->_plugins[$name]))
 			return $instance->_plugins[$name];
@@ -1396,7 +1396,7 @@ class DMANAGER
 		static $instance;
 
 		if (!is_object($instance))
-			$instance = new DMANAGER();
+			$instance = new jtour();
 
 		return $instance;
 	}
@@ -1404,12 +1404,12 @@ class DMANAGER
 	function finalize($transaction_id)
 	{
 		$mainframe =& JFactory::getApplication();
-		$option = 'com_DMANAGER';
+		$option = 'com_jtour';
 		$db = JFactory::getDBO();
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_DMANAGER'.DS.'tables');
+		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_jtour'.DS.'tables');
 		
 		// get transaction details
-		$transaction =& JTable::getInstance('DMANAGER_Transactions','Table');
+		$transaction =& JTable::getInstance('jtour_Transactions','Table');
 		$transaction->load($transaction_id);
 		
 		if (!$transaction->params)
@@ -1420,9 +1420,9 @@ class DMANAGER
 		$user_email = $transaction->user_email;
 		
 		// get membership details
-		$params = DManagerHelper::parseParams($transaction->params);
+		$params = jtourHelper::parseParams($transaction->params);
 		
-		$membership =& JTable::getInstance('DMANAGER_Memberships','Table');
+		$membership =& JTable::getInstance('jtour_Memberships','Table');
 		$extras = '';
 		
 		switch ($transaction->type)
@@ -1482,14 +1482,14 @@ class DMANAGER
 		
 		if (!empty($params['extras']))
 		{
-			$db->setQuery("SELECT `name` FROM #__DMANAGER_extra_values WHERE `id` IN (".implode(',', $params['extras']).")");
+			$db->setQuery("SELECT `name` FROM #__jtour_extra_values WHERE `id` IN (".implode(',', $params['extras']).")");
 			$extras = implode(', ', $db->loadResultArray());
 		}
 		
 		$replace = array('{membership}', '{extras}', '{email}', '{name}', '{username}', '{continue}', '{price}');
-		$with = array($membership->name, $extras, $user_email, $user_data->name, (isset($user_data->username) ? $user_data->username : ''),'<input class="button" type="button" onclick="location.href=\''.(!empty($membership->redirect) ? $membership->redirect : JRoute::_('index.php?option=com_DMANAGER')).'\'" value="'.JText::_('RSM_CONTINUE').'" />', DManagerHelper::getPriceFormat($transaction->price));
+		$with = array($membership->name, $extras, $user_email, $user_data->name, (isset($user_data->username) ? $user_data->username : ''),'<input class="button" type="button" onclick="location.href=\''.(!empty($membership->redirect) ? $membership->redirect : JRoute::_('index.php?option=com_jtour')).'\'" value="'.JText::_('RSM_CONTINUE').'" />', jtourHelper::getPriceFormat($transaction->price));
 		
-		$db->setQuery("SELECT * FROM #__DMANAGER_fields WHERE published='1'");
+		$db->setQuery("SELECT * FROM #__jtour_fields WHERE published='1'");
 		$fields = $db->loadObjectList();
 		foreach ($fields as $field)
 		{
@@ -1527,7 +1527,7 @@ class DMANAGER
 			// bcc
 			$bcc = null;
 			// attachments
-			$db->setQuery("SELECT `path` FROM #__DMANAGER_membership_attachments WHERE `membership_id`='".$transaction->membership_id."' AND `email_type`='".$email_type."' AND `published`='1' ORDER BY `ordering`");
+			$db->setQuery("SELECT `path` FROM #__jtour_membership_attachments WHERE `membership_id`='".$transaction->membership_id."' AND `email_type`='".$email_type."' AND `published`='1' ORDER BY `ordering`");
 			$attachment = $db->loadResultArray();
 			// reply to
 			$replyto = $from;
@@ -1589,27 +1589,27 @@ class DMANAGER
 	function approve($transaction_id, $force=false)
 	{
 		$db =& JFactory::getDBO();
-		$db->setQuery("SELECT * FROM #__DMANAGER_transactions WHERE `id`='".(int) $transaction_id."'".($force ? "" : " AND `status`='pending'"));
+		$db->setQuery("SELECT * FROM #__jtour_transactions WHERE `id`='".(int) $transaction_id."'".($force ? "" : " AND `status`='pending'"));
 		$transaction = $db->loadObject();
 		if (empty($transaction->id)) return false;
 		
-		$params = DManagerHelper::parseParams($transaction->params);
+		$params = jtourHelper::parseParams($transaction->params);
 		
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_DMANAGER'.DS.'tables');
+		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_jtour'.DS.'tables');
 		
-		$row =& JTable::getInstance('DMANAGER_Membership_Users','Table');
+		$row =& JTable::getInstance('jtour_Membership_Users','Table');
 		$row->user_id = $transaction->user_id;
-		if (!DManagerHelper::getConfig('create_user_instantly') || ($row->user_id == 0))
+		if (!jtourHelper::getConfig('create_user_instantly') || ($row->user_id == 0))
 		{
-			$row->user_id = DMANAGER::createUser($transaction->user_email, unserialize($transaction->user_data));
-			$db->setQuery("UPDATE #__DMANAGER_transactions SET `user_id`='".$row->user_id."' WHERE `id`='".$transaction->id."'");
+			$row->user_id = jtour::createUser($transaction->user_email, unserialize($transaction->user_data));
+			$db->setQuery("UPDATE #__jtour_transactions SET `user_id`='".$row->user_id."' WHERE `id`='".$transaction->id."'");
 			$db->query();
 		}
 		$row->price = $transaction->price;
 		$row->currency = $transaction->currency;
 		
-		$idev_enabled 		 = DManagerHelper::getConfig('idev_enable');
-		$idev_track_renewals = DManagerHelper::getConfig('idev_track_renewals');
+		$idev_enabled 		 = jtourHelper::getConfig('idev_enable');
+		$idev_track_renewals = jtourHelper::getConfig('idev_track_renewals');
 		$update_gid    = false;
 		$update_user   = false;
 		$update_idev   = false;
@@ -1619,7 +1619,7 @@ class DMANAGER
 		{
 			case 'new':
 				$row->membership_id = $params['membership_id'];
-				$db->setQuery("SELECT * FROM #__DMANAGER_memberships WHERE `id`='".(int) $row->membership_id."'");
+				$db->setQuery("SELECT * FROM #__jtour_memberships WHERE `id`='".(int) $row->membership_id."'");
 				$membership = $db->loadObject();
 				
 				if (empty($membership))
@@ -1643,7 +1643,7 @@ class DMANAGER
 				
 				if ($membership->fixed_expiry)
 				{
-					$row->membership_end = DManagerHelper::calculateFixedDate($membership);
+					$row->membership_end = jtourHelper::calculateFixedDate($membership);
 				}
 				else
 				{
@@ -1680,14 +1680,14 @@ class DMANAGER
 			break;
 			
 			case 'addextra':
-				$db->setQuery("SELECT `extras` FROM #__DMANAGER_membership_users WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("SELECT `extras` FROM #__jtour_membership_users WHERE `id`='".(int) $params['id']."'");
 				$extras = $db->loadResult();
 				$extras = explode(',', $extras);
 				if (empty($extras[0]))
 					$extras = $params['extras'];
 				else
 					$extras = array_merge($extras, $params['extras']);
-				$db->setQuery("UPDATE #__DMANAGER_membership_users SET `extras`='".implode(',', $extras)."' WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("UPDATE #__jtour_membership_users SET `extras`='".implode(',', $extras)."' WHERE `id`='".(int) $params['id']."'");
 				$db->query();
 				
 				$return = $params['id'];
@@ -1696,39 +1696,39 @@ class DMANAGER
 			
 			case 'upgrade':
 				// Get the upgraded membership
-				$db->setQuery("SELECT * FROM #__DMANAGER_memberships WHERE `id`='".(int) $params['to_id']."'");
+				$db->setQuery("SELECT * FROM #__jtour_memberships WHERE `id`='".(int) $params['to_id']."'");
 				$membership = $db->loadObject();
 				
 				// Get the current membership
-				$db->setQuery("SELECT * FROM #__DMANAGER_membership_users WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("SELECT * FROM #__jtour_membership_users WHERE `id`='".(int) $params['id']."'");
 				$current = $db->loadObject();
-				$db->setQuery("SELECT * FROM #__DMANAGER_memberships WHERE `id`='".$current->membership_id."'");				
+				$db->setQuery("SELECT * FROM #__jtour_memberships WHERE `id`='".$current->membership_id."'");				
 				$old_membership = $db->loadObject();
 				
-				$db->setQuery("UPDATE #__DMANAGER_membership_users SET `membership_id`='".(int) $params['to_id']."' WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("UPDATE #__jtour_membership_users SET `membership_id`='".(int) $params['to_id']."' WHERE `id`='".(int) $params['id']."'");
 				$db->query();
 				
 				$new_price = '';
-				$db->setQuery("SELECT price FROM #__DMANAGER_membership_upgrades WHERE `membership_from_id`='".(int) $old_membership->id."' AND `membership_to_id`='".(int) $membership->id."' AND `published`='1'");
+				$db->setQuery("SELECT price FROM #__jtour_membership_upgrades WHERE `membership_from_id`='".(int) $old_membership->id."' AND `membership_to_id`='".(int) $membership->id."' AND `published`='1'");
 				$upgrade = $db->loadResult();				
 				if ($upgrade)
 					$new_price = ", `price`='".$db->getEscaped($current->price + $upgrade)."'";
 				
 				if ($membership->fixed_expiry)
 				{
-					$membership_end = DManagerHelper::calculateFixedDate($membership);
+					$membership_end = jtourHelper::calculateFixedDate($membership);
 					$status = '';
 					if ($membership_end > $date->toUnix())
 						$status = ", `status`='0', `notified`='0'";
 						
-					$db->setQuery("UPDATE #__DMANAGER_membership_users SET membership_end = '".$membership_end."' $status $new_price WHERE `id`='".(int) $params['id']."'");
+					$db->setQuery("UPDATE #__jtour_membership_users SET membership_end = '".$membership_end."' $status $new_price WHERE `id`='".(int) $params['id']."'");
 					$db->query();
 				}
 				else
 				{
 					if ($membership->period == 0)
 					{
-						$db->setQuery("UPDATE #__DMANAGER_membership_users SET `membership_end`='0', `status`='0', `notified`='0' $new_price WHERE `id`='".(int) $params['id']."'");
+						$db->setQuery("UPDATE #__jtour_membership_users SET `membership_end`='0', `status`='0', `notified`='0' $new_price WHERE `id`='".(int) $params['id']."'");
 						$db->query();
 					}
 					elseif ($membership->period > 0)
@@ -1745,13 +1745,13 @@ class DMANAGER
 						if ($membership_end > $date->toUnix())
 							$status = ", `status`='0', `notified`='0'";
 							
-						$db->setQuery("UPDATE #__DMANAGER_membership_users SET membership_end = '".$membership_end."' $status $new_price WHERE `id`='".(int) $params['id']."'");
+						$db->setQuery("UPDATE #__jtour_membership_users SET membership_end = '".$membership_end."' $status $new_price WHERE `id`='".(int) $params['id']."'");
 						$db->query();
 					}
 				}
 				
 				// the last transaction
-				$db->setQuery("UPDATE #__DMANAGER_membership_users SET `last_transaction_id`='".$transaction->id."' WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("UPDATE #__jtour_membership_users SET `last_transaction_id`='".$transaction->id."' WHERE `id`='".(int) $params['id']."'");
 				$db->query();
 				
 				if ($membership->gid_enable)
@@ -1767,18 +1767,18 @@ class DMANAGER
 			
 			case 'renew':
 				$row->membership_id = $params['membership_id'];
-				$db->setQuery("SELECT * FROM #__DMANAGER_memberships WHERE `id`='".(int) $row->membership_id."'");
+				$db->setQuery("SELECT * FROM #__jtour_memberships WHERE `id`='".(int) $row->membership_id."'");
 				$membership = $db->loadObject();
 				
 				$membership_start = $date->toUnix();
 				if ($membership->fixed_expiry)
 				{
-					$membership_end = DManagerHelper::calculateFixedDate($membership);
+					$membership_end = jtourHelper::calculateFixedDate($membership);
 				}
 				else
 				{
 					// Renew when not expired ?
-					$db->setQuery("SELECT * FROM #__DMANAGER_membership_users WHERE `id`='".(int) $params['id']."'");
+					$db->setQuery("SELECT * FROM #__jtour_membership_users WHERE `id`='".(int) $params['id']."'");
 					$current = $db->loadObject();
 					if ($current->status == 0)
 						$membership_start = $current->membership_end;
@@ -1801,11 +1801,11 @@ class DMANAGER
 						$membership_start = $current->membership_start;
 				}
 				
-				$db->setQuery("UPDATE #__DMANAGER_membership_users SET `membership_start`='".$membership_start."', `membership_end`='".$membership_end."',`status`='0', `notified`='0' WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("UPDATE #__jtour_membership_users SET `membership_start`='".$membership_start."', `membership_end`='".$membership_end."',`status`='0', `notified`='0' WHERE `id`='".(int) $params['id']."'");
 				$db->query();
 				
 				// the last transaction
-				$db->setQuery("UPDATE #__DMANAGER_membership_users SET `last_transaction_id`='".$transaction->id."' WHERE `id`='".(int) $params['id']."'");
+				$db->setQuery("UPDATE #__jtour_membership_users SET `last_transaction_id`='".$transaction->id."' WHERE `id`='".(int) $params['id']."'");
 				$db->query();
 				
 				if ($membership->gid_enable)
@@ -1822,12 +1822,12 @@ class DMANAGER
 		}
 		
 		if ($update_gid)
-			DMANAGER::updateGid($row->user_id, $membership->gid_subscribe, true);
+			jtour::updateGid($row->user_id, $membership->gid_subscribe, true);
 		
 		if ($update_user)
-			DMANAGER::enableUser($row->user_id);
+			jtour::enableUser($row->user_id);
 			
-		$db->setQuery("UPDATE #__DMANAGER_transactions SET `status`='completed' WHERE `id`='".$transaction->id."'");
+		$db->setQuery("UPDATE #__jtour_transactions SET `status`='completed' WHERE `id`='".$transaction->id."'");
 		$db->query();
 		
 		$user_data = unserialize($transaction->user_data);
@@ -1835,7 +1835,7 @@ class DMANAGER
 		$replace = array('{membership}', '{email}', '{username}', '{name}');
 		$with = array($membership->name, $user_email, (isset($user_data->username) ? $user_data->username : ''), $user_data->name);
 		
-		$db->setQuery("SELECT * FROM #__DMANAGER_fields WHERE published='1'");
+		$db->setQuery("SELECT * FROM #__jtour_fields WHERE published='1'");
 		$fields = $db->loadObjectList();
 		foreach ($fields as $field)
 		{
@@ -1848,7 +1848,7 @@ class DMANAGER
 		}
 		
 		if ($update_rsmail)
-			DMANAGER::addToRSMail($update_rsmail, $row->user_id, $user_email, $user_data);
+			jtour::addToRSMail($update_rsmail, $row->user_id, $user_email, $user_data);
 		
 		$userEmail  = array('from' => '', 'fromName' => '', 'recipient' => '', 'subject' => '', 'body' => '', 'mode' => '', 'cc' => '', 'bcc' => '', 'attachments' => '', 'replyto' => '', 'replytoname' => '');
 		$adminEmail = array('from' => '', 'fromName' => '', 'recipient' => '', 'subject' => '', 'body' => '', 'mode' => '', 'cc' => '', 'bcc' => '', 'attachments' => '', 'replyto' => '', 'replytoname' => '');
@@ -1877,7 +1877,7 @@ class DMANAGER
 			// bcc
 			$userEmail['bcc'] = null;
 			// attachments
-			$db->setQuery("SELECT `path` FROM #__DMANAGER_membership_attachments WHERE `membership_id`='".$membership->id."' AND `email_type`='user_email_approved' AND `published`='1' ORDER BY `ordering`");
+			$db->setQuery("SELECT `path` FROM #__jtour_membership_attachments WHERE `membership_id`='".$membership->id."' AND `email_type`='user_email_approved' AND `published`='1' ORDER BY `ordering`");
 			$userEmail['attachments'] = $db->loadResultArray();
 			// reply to
 			$userEmail['replyto'] = $userEmail['from'];
@@ -1928,15 +1928,15 @@ class DMANAGER
 		{
 			// decrease stock
 			if ($membership->stock > 1)
-				$this->_db->setQuery("UPDATE #__DMANAGER_memberships SET `stock`=`stock`-1 WHERE `id`='".$membership->id."'");
+				$this->_db->setQuery("UPDATE #__jtour_memberships SET `stock`=`stock`-1 WHERE `id`='".$membership->id."'");
 			// or set it to unavailable (-1 instead of 0, which actually means unlimited)
 			else
-				$this->_db->setQuery("UPDATE #__DMANAGER_memberships SET `stock`='-1' WHERE `id`='".$membership->id."'");
+				$this->_db->setQuery("UPDATE #__jtour_memberships SET `stock`='-1' WHERE `id`='".$membership->id."'");
 			$this->_db->query();
 		}
 		
 		if ($update_idev)
-			DMANAGER::updateIdev(array('idev_saleamt' => $transaction->price, 'idev_ordernum' => $transaction->id, 'ip_address' => $transaction->ip));
+			jtour::updateIdev(array('idev_saleamt' => $transaction->price, 'idev_ordernum' => $transaction->id, 'ip_address' => $transaction->ip));
 		
 		// should return the newly created/updated membership id
 		return $return;
@@ -1945,7 +1945,7 @@ class DMANAGER
 	function deny($transaction_id, $force=false)
 	{
 		$db =& JFactory::getDBO();
-		$db->setQuery("UPDATE #__DMANAGER_transactions SET `status`='denied' WHERE `id`='".(int) $transaction_id."'".($force ? "" : " AND `status`='pending'"));
+		$db->setQuery("UPDATE #__jtour_transactions SET `status`='denied' WHERE `id`='".(int) $transaction_id."'".($force ? "" : " AND `status`='pending'"));
 		return $db->query();
 	}
 	
@@ -1959,7 +1959,7 @@ class DMANAGER
 		$lang->load('com_user', JPATH_SITE, null, true);
 		$lang->load('com_user', JPATH_ADMINISTRATOR, null, true);
 		$lang->load('com_users', JPATH_ADMINISTRATOR, null, true);
-		$lang->load('com_DMANAGER', JPATH_SITE);
+		$lang->load('com_jtour', JPATH_SITE);
 		
 		$db = JFactory::getDBO();
 		$db->setQuery("SELECT `id` FROM #__users WHERE `email` LIKE '".$db->getEscaped($email)."' LIMIT 1");
@@ -1972,7 +1972,7 @@ class DMANAGER
 		
 		@list($username, $domain) = explode('@', $email);
 		
-		if (DManagerHelper::getConfig('choose_username') && !empty($data->username))
+		if (jtourHelper::getConfig('choose_username') && !empty($data->username))
 			$username = $data->username;
 		
 		$db->setQuery("SELECT `id` FROM #__users WHERE `username` LIKE '".$db->getEscaped($username)."' LIMIT 1");
@@ -2005,7 +2005,7 @@ class DMANAGER
 		// Set some initial user values
 		$user->set('id', 0);
 		
-		if (DManagerHelper::isJ16())
+		if (jtourHelper::isJ16())
 		{
 			$usersConfig = JComponentHelper::getParams('com_users');
 			$user->set('groups', array($usersConfig->get('new_usertype', 2)));
@@ -2054,15 +2054,15 @@ class DMANAGER
 		// Disallow control chars in the email
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password);
 		
-		if (DManagerHelper::getConfig('choose_password') && !empty($data->password))
+		if (jtourHelper::getConfig('choose_password') && !empty($data->password))
 		{
 			$db->setQuery("UPDATE #__users SET `password`='".$db->getEscaped($data->password)."' WHERE `id`='".$user->get('id')."'");
 			$db->query();
 			$password = JText::_('RSM_HIDDEN_PASSWORD_TEXT');
 		}
 		
-		DMANAGER::sendUserEmail($user, $password, $data->fields);
-		DMANAGER::createUserData($user->get('id'), $data->fields);
+		jtour::sendUserEmail($user, $password, $data->fields);
+		jtour::createUserData($user->get('id'), $data->fields);
 		
 		return $user->get('id');
 	}
@@ -2072,7 +2072,7 @@ class DMANAGER
 		$mainframe =& JFactory::getApplication();
 		
 		$lang =& JFactory::getLanguage();
-		$lang->load('com_DMANAGER', JPATH_SITE);
+		$lang->load('com_jtour', JPATH_SITE);
 
 		$db =& JFactory::getDBO();
 
@@ -2094,7 +2094,7 @@ class DMANAGER
 
 		if ($useractivation == 1)
 		{
-			if (DManagerHelper::isJ16())
+			if (jtourHelper::isJ16())
 				$activation_url = '<a href="'.$siteURL.'index.php?option=com_users&task=registration.activate&token='.$user->get('activation').'">'.$siteURL.'index.php?option=com_users&task=registration.activate&token='.$user->get('activation').'</a>';
 			else
 				$activation_url = '<a href="'.$siteURL.'index.php?option=com_user&task=activate&activation='.$user->get('activation').'">'.$siteURL.'index.php?option=com_user&task=activate&activation='.$user->get('activation').'</a>';
@@ -2147,16 +2147,16 @@ class DMANAGER
 		$db 	 =& JFactory::getDBO();
 		$user_id = (int) $user_id;
 		
-		$db->setQuery("SELECT `user_id` FROM #__DMANAGER_users WHERE `user_id`='".$user_id."'");
+		$db->setQuery("SELECT `user_id` FROM #__jtour_users WHERE `user_id`='".$user_id."'");
 		if (!$db->loadResult())
 		{
-			$db->setQuery("INSERT INTO #__DMANAGER_users SET `user_id`='".$user_id."'");
+			$db->setQuery("INSERT INTO #__jtour_users SET `user_id`='".$user_id."'");
 			$db->query();
 		}
 		
 		$columns = array();
 		
-		$db->setQuery("SELECT * FROM #__DMANAGER_fields WHERE published='1' ORDER BY ordering");
+		$db->setQuery("SELECT * FROM #__jtour_fields WHERE published='1' ORDER BY ordering");
 		$fields = $db->loadObjectList();
 		foreach ($fields as $field)
 		{
@@ -2169,7 +2169,7 @@ class DMANAGER
 			$columns[] = "`f".$field->id."`='".$db->getEscaped($post[$field->name])."'";
 		}
 		
-		$db->setQuery("UPDATE #__DMANAGER_users SET ".implode(", ", $columns)." WHERE user_id='".$user_id."' LIMIT 1");		
+		$db->setQuery("UPDATE #__jtour_users SET ".implode(", ", $columns)." WHERE user_id='".$user_id."' LIMIT 1");		
 		$db->query();
 	}
 	
@@ -2178,7 +2178,7 @@ class DMANAGER
 		$db 	 	 =& JFactory::getDBO();
 		$user_id 	 = (int) $user_id;
 		
-		if (DManagerHelper::isJ16())
+		if (jtourHelper::isJ16())
 		{
 			jimport('joomla.user.helper');
 			
@@ -2233,7 +2233,7 @@ class DMANAGER
 		foreach ($params as $param => $value)
 			$get[] = urlencode($param).'='.urlencode($value);
 		
-		$url = DManagerHelper::getConfig('idev_url').'sale.php?'.implode('&', $get);
+		$url = jtourHelper::getConfig('idev_url').'sale.php?'.implode('&', $get);
 		
 		if (function_exists('curl_init'))
 		{
@@ -2271,12 +2271,12 @@ class DMANAGER
 			$tag = $lang->getTag();
 		
 			$db =& JFactory::getDBO();
-			$db->setQuery("SELECT IdList, params FROM #__rsmail_integrations WHERE `IntegrationType`='DMANAGER'");
+			$db->setQuery("SELECT IdList, params FROM #__rsmail_integrations WHERE `IntegrationType`='jtour'");
 			$integrations = $db->loadObjectList();
 			foreach ($integrations as $detail)
 			{
 				$reg =& JRegistry::getInstance('');
-				if (DManagerHelper::isJ16())
+				if (jtourHelper::isJ16())
 					$reg->loadJSON($detail->params);
 				else
 					$reg->loadINI($detail->params);
@@ -2355,7 +2355,7 @@ class DMANAGER
 	}
 }
 
-class DMANAGERValidation
+class jtourValidation
 {
 	function website($url)
 	{
