@@ -1,7 +1,7 @@
 <?php
 /**
-* @version 1.0.0
-* @package jtour! 1.0.0
+* @version 1.0.1
+* @package jtour! 1.0.1
 * @copyright (C) 2012 http://joomalungma.com
 * @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
 */

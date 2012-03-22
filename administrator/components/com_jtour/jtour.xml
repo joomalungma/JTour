@@ -2,7 +2,7 @@
 <extension type="component" version="1.7" method="upgrade">
 	<name>JTour</name>
     <version>1.0.1</version>
-    <description>COM_JTOUR_XML_DESCRIPTION</description>
+    <description>JTOUR_XML_DESCRIPTION</description>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <author>Nikita Zonov</author>
     <authoremail>info@joomalungma.com</authoremail>
@@ -39,8 +39,12 @@
 	<administration>
         <menu img="components/com_jtour/assets/images/menu_jtour.gif">jtour!</menu>
 		<submenu>
-			<menu img="components/com_jtour/assets/images/menu_overview.gif" link="option=com_jtour">COM_JTOUR_OVERVIEW</menu>
-			<menu img="components/com_jtour/assets/images/menu_configuration.gif" view="configuration">COM_JTOUR_CONFIGURATION</menu>
+			<menu img="components/com_jtour/assets/images/menu_overview.gif" link="option=com_jtour">JTOUR_OVERVIEW</menu>
+			<menu img="components/com_jtour/assets/images/menu_tours.gif" link="option=com_jtour">JTOUR_TOURS</menu>
+			<menu img="components/com_jtour/assets/images/menu_excursions.gif" link="option=com_jtour">JTOUR_EXCURSIONS</menu>
+			<menu img="components/com_jtour/assets/images/menu_orders.gif" link="option=com_jtour">JTOUR_ORDERS</menu>
+			<menu img="components/com_jtour/assets/images/menu_payments.gif" link="option=com_jtour">JTOUR_PAYMENTS</menu>
+			<menu img="components/com_jtour/assets/images/menu_configuration.gif" view="configuration">JTOUR_CONFIGURATION</menu>
 		</submenu>
         <files folder="admin">
 			<filename>install.mysql.utf8.sql</filename>

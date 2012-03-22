@@ -13,6 +13,7 @@ jimport('joomla.application.component.controller');
 class JTourController extends JController
 {
 	var $_db;
+    var $_input;
 	
 	function __construct()
 	{
@@ -21,12 +22,10 @@ class JTourController extends JController
 		// Add the css stylesheet
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_jtour/assets/css/jtour.css');
 		
-		if (jtourHelper::isJ16())
-			$document->addStyleSheet(JURI::root(true).'/administrator/components/com_jtour/assets/css/jtour16.css');
-		
 		// Set the database object
 		$this->_db =& JFactory::getDBO();
-		
+		$this->_input = JFactory::getApplication()->input;
+
 		JTourHelper::readConfig();
 	}
 	
@@ -38,4 +37,3 @@ class JTourController extends JController
 		parent::display();
 	}
 }
-?>

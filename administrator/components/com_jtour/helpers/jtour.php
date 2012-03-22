@@ -50,8 +50,8 @@ class JTourHelper
 		else
 			return $config;
 	}
-	
-	function isJ16()
+
+    function isJ16()
 	{
 		jimport('joomla.version');
 		$version = new JVersion();
@@ -267,56 +267,8 @@ class JTourHelper
 		else
 			return false;
 	}
-	
-	function getStatuses($list=true)
-	{		
-		$return = array();
-		for ($i=0;$i<=3;$i++)
-		{
-			if ($list)
-				$return[] = JHTML::_('select.option', $i, JText::_('RSM_STATUS_'.$i));
-			else
-				$return[$i] = JText::_('RSM_STATUS_'.$i);
-		}
-		
-		return $return;
-	}
-	
-	function parseParams($params)
-	{
-		$return = array();
-		
-		$params = explode(';', $params);
-		foreach ($params as $param)
-		{
-			$param = explode('=', $param);
-			if ($param[0] == 'extras')
-				$param[1] = explode(',', $param[1]);
-				
-			$return[$param[0]] = @$param[1];
-		}
-		
-		return $return;
-	}
-	
-	function getCache()
-	{
-		$return = new stdClass();
-		
-		$return->memberships = array();
-		$this->_db->setQuery("SELECT `id`, `name` FROM #__jtour_memberships");
-		$result = $this->_db->loadObjectList();
-		foreach ($result as $row)
-			$return->memberships[$row->id] = $row->name;
-		
-		$return->extra_values = array();
-		$this->_db->setQuery("SELECT `id`, `name` FROM #__jtour_extra_values");
-		$result = $this->_db->loadObjectList();
-		foreach ($result as $row)
-			$return->extra_values[$row->id] = $row->name;
-		
-		return $return;
-	}
+
+
 	
 	function sendExpirationEmails()
 	{
@@ -805,11 +757,7 @@ class JTourHelper
 			}
 	}
 	
-	function getOption()
-	{
-		$option = JRequest::getVar('option');
-		return $option;
-	}
+
 	
 	function checkShared()
 	{
@@ -1297,7 +1245,7 @@ class JTourHelper
 	}
 }
 
-class jtour
+class JTour
 {
 	var $_plugins = array();
 	
@@ -2223,139 +2171,9 @@ class jtour
 		$db->setQuery("UPDATE #__users SET `block`='0' WHERE `id`='".(int) $user_id."'");
 		$db->query();
 	}
-	
-	function updateIdev($params=array())
-	{
-		if (!isset($params['profile']))
-			$params['profile'] = 72198;
-			
-		$get = array();
-		foreach ($params as $param => $value)
-			$get[] = urlencode($param).'='.urlencode($value);
-		
-		$url = jtourHelper::getConfig('idev_url').'sale.php?'.implode('&', $get);
-		
-		if (function_exists('curl_init'))
-		{
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$result = curl_exec($ch);
-			$error = curl_error($ch);
-			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			curl_close($ch);
-			
-			if ($result === false || $code != 200)
-				return array('success' => 0, 'error' => $error, 'result' => $result, 'code' => $code, 'url' => $url);
-			
-			return array('success' => 1, 'result' => $result, 'url' => $url);
-		}
-		
-		return array('success' => 0, 'error' => JText::_('RSM_CURL_NOT_AVAILABLE'), 'code' => 0, 'url' => $url);
-	}
-	
-	function addToRSMail($membership_id, $user_id, $email, $user_data)
-	{
-		if (empty($membership_id)) return false;
-		
-		jimport('joomla.application.component.helper');
-		jimport('joomla.html.parameter');
-		if (JComponentHelper::isEnabled('com_rsmail'))
-		{
-			$email = strtolower($email);
-			
-			// Load the language file
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_rsmail', JPATH_ADMINISTRATOR );
-			$lang->load('com_rsmail', JPATH_SITE);
-			$tag = $lang->getTag();
-		
-			$db =& JFactory::getDBO();
-			$db->setQuery("SELECT IdList, params FROM #__rsmail_integrations WHERE `IntegrationType`='jtour'");
-			$integrations = $db->loadObjectList();
-			foreach ($integrations as $detail)
-			{
-				$reg =& JRegistry::getInstance('');
-				if (jtourHelper::isJ16())
-					$reg->loadJSON($detail->params);
-				else
-					$reg->loadINI($detail->params);
-				$params = $reg->toObject();
-				if ($params->membership_id == $membership_id && $detail->IdList > 0)
-				{
-					$db->setQuery("SELECT * FROM `#__rsmail_config`");
-					$rsmailConfigDb = $db->loadObjectList();
-					$rsmailConfig = array();
-					foreach ($rsmailConfigDb as $rowConfig)
-						$rsmailConfig[$rowConfig->ConfigName] = $rowConfig->ConfigValue;
-					
-					$db->setQuery("SELECT COUNT(IdSubscriber) FROM #__rsmail_subscribers WHERE IdList = ".(int) $detail->IdList." AND SubscriberEmail = '".$db->getEscaped($email)."'");
-					$alreadySubscribed = $db->loadResult();
-					if (!$alreadySubscribed)
-					{
-						//set the status of the subscriber
-						$published = 0;
-						$published = ($rsmailConfig['confirm_email'] == 0) ? 1 : 0;
-						
-						//lets add the subscriber into RSMail!
-						
-						$date = JFactory::getDate();
-						$unix = $date->toUnix();
-						
-						$db->setQuery("INSERT INTO #__rsmail_subscribers SET SubscriberEmail = '".$db->getEscaped($email)."' , IdList = ".(int) $detail->IdList." , DateSubscribed = ".$unix." , UserId = ".(int) $user_id." , SubscriberIp = '".$db->getEscaped(@$_SERVER['REMOTE_ADDR'])."' , published = ".$published);
-						$db->query();
-						$subscriberId = $db->insertid();
-						
-						foreach ($params as $prop => $param)
-						{
-							if($param == JText::_('RSM_IGNORE')) continue;
-							if($prop == 'membership_id') continue;
-							
-							if (!isset($user_data->fields[$prop])) continue;
-							if (is_array($user_data->fields[$prop]))
-								$user_data->fields[$prop] = implode(', ', $user_data->fields[$prop]);
-							
-							$db->setQuery("INSERT INTO #__rsmail_subscriber_details SET IdSubscriber = ".(int) $subscriberId." , IdList = ".(int) $detail->IdList." , FieldName = '".$db->getEscaped($param)."' , FieldValue = '".$db->getEscaped($user_data->fields[$prop])."'");
-							$db->query();
-						}
-						
-						//send the confirmation email 
-						if ($published == 0)
-						{
-							$db->setQuery("SELECT ListName FROM #__rsmail_lists WHERE IdList = ".(int) $detail->IdList);
-							$listName = $db->loadResult();
-						
-							$to			= $email;
-							$from		= $rsmailConfig['confirm_from'];
-							$fromName	= $rsmailConfig['confirm_fromname'];
-							$subject 	= $rsmailConfig['confirm_subject'];
-							$type		= $rsmailConfig['confirm_type'];
-							$db->setQuery("SELECT `text` FROM #__rsmail_emails WHERE `type` = 'confirmation' AND lang = '".$db->getEscaped($tag)."' ");
-							$message	= $db->loadResult();
-							
-							$secret = md5($detail->IdList.$subscriberId.$db->getEscaped($email));
-							$secretLink = '<a href="'.JURI::root().'index.php?option=com_rsmail&task=activate&secret='.$secret.'">'.JText::_('RSM_CLICK_TO_ACTIVATE').'</a>';
-							
-							$bad	= array('{newsletter}','{email}','{activationlink}');
-							$good	= array($listName,$to,$secretLink);
-							
-							$subject = str_replace($bad,$good,$subject);
-							$message = str_replace($bad,$good,$message);
-							
-							JUtility::sendMail($from ,$fromName, $to, $subject, $message, $type);
-						}
-						return true;
-					}
-					return null;
-				}
-			}
-		}
-		
-		return false;
-	}
 }
 
-class jtourValidation
+class JTourValidation
 {
 	function website($url)
 	{

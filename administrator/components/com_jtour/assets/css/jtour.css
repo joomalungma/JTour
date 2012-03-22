@@ -1,10 +1,17 @@
-.icon-48-rsmembership
+/**
+ * @version 1.0.1
+ * @package JTour! 1.0.1
+ * @copyright (C) 2012 joomalungma.com
+ * @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+.icon-48-jtour
 {
-	background-image: url(../images/icon-48-rsmembership.png);
-	@background-image: url(../images/icon-48-rsmembership.gif);
+	background-image: url(../images/icon-48-jtour.png);
+	@background-image: url(../images/icon-48-jtour.gif);
 }
 
-.rsmembership_clear
+.jtour_clear
 {
 	display: block;
 	clear: both;
@@ -30,30 +37,30 @@ a.file
 	margin-right: 10px;
 }
 
-.rsmembership_explorer_header
+.jtour_explorer_header
 {
 	text-align: left;
 	background: #FFF9E5;
 	padding: 5px;
 }
 
-.rsmembership_high
+.jtour_high
 {
 	color: #FF6633;
 }
 
-.rsmembership_critical
+.jtour_critical
 {
 	color: #B82E00;
 }
 
-.rsmembership_red
+.jtour_red
 {
 	color: #850021;
 	font-weight: bold;
 }
 
-.rsmembership_green
+.jtour_green
 {
 	color: #008521;
 }
@@ -282,3 +289,30 @@ table.plugins td{
 {
 	background-image: url(../images/icon-32-deny.png);
 }
+
+div.current input
+{
+    float: none !important;
+}
+
+div.current select
+{
+    margin-bottom: 0px !important;
+}
+
+div.current label
+{
+    float: none !important;
+    display: inline !important;
+}
+
+table.admintable tr td
+{
+    padding: 2px;
+}
+
+span.config_remove_btn {display: block;width: 16px;height: 16px; background: url(../images/btn_remove16.png) no-repeat 0 0;cursor: pointer;}
+
+.highlighted {background: #FFF;}
+.highlighted:hover {background: #F0F0D0;}
+span.btn_add {display: block;width:16px;height: 16px; background: url(../images/btn_add16.png) no-repeat 0 0; position: relative;top: 3px; left: 2px;}
