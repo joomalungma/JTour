@@ -43,7 +43,7 @@ class JTourModelExcursions extends JModel
     function _buildQuery()
     {
         $app =& JFactory::getApplication();
-        $input = new JInput();
+        $input = $app->input;
 
         $query = "SELECT * FROM #__jtour_excursions WHERE 1";
 
@@ -64,7 +64,7 @@ class JTourModelExcursions extends JModel
         $query .= " ORDER BY ".$sortColumn." ".$sortOrder;
         return $query;
     }
-    function getexcursions()
+    function getExcursions()
     {
         $option = 'com_jtour';
 
@@ -94,9 +94,9 @@ class JTourModelExcursions extends JModel
 		return $this->_total;
 	}
 	
-	function getTour()
+	function getExcursion()
 	{
-        $input = new JInput();
+        $input = JFactory::getApplication()->input;
         $cid = $input->get('cid', 0, 'array');
 		if (is_array($cid))
 			$cid = $cid[0];
@@ -105,6 +105,8 @@ class JTourModelExcursions extends JModel
 		$row =&JTable::getInstance('excursions','JTourTable');
         $row->load($cid);
 
+
+        $row->workdays = explode(',',$row->workdays);
 		return $row;
 	}
 	
@@ -145,20 +147,22 @@ class JTourModelExcursions extends JModel
 	{
         $row =&JTable::getInstance('excursions','JTourTable');
 		$post = JRequest::get('post');
-        $input = new JInput();
+        $input = JFactory::getApplication()->input;
+
         $var = array(
             'id'        => 'int',
 	        'name'      => 'string',
 	        'description' => 'HTML',
             'duration' => 'int',
+            'workdays' => 'array',
             'price' => 'string',
             'currencyId' => 'string',
             'modified' => 'string',
             'published' => 'int',
-            'cid'       =>array(),
+            'cid'       =>'array',
         );
         $post = $input->getArray($var);
-
+        $post['workdays'] = implode(',',$post['workdays']);
         $post['description'] = JRequest::getVar('description', '', 'post', 'none', JREQUEST_ALLOWRAW);
 
 		if (!$row->bind($post))

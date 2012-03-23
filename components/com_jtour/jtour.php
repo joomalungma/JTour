@@ -1,33 +1,32 @@
 <?php
 /**
-* @version 1.0.0
-* @package RSMembership! 1.0.0
-* @copyright (C) 2009-2010 www.rsjoomla.com
-* @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
+* @version 1.0.1
+    * @package JTour! 1.0.1
+    * @copyright (C) 2012 joomalungma.com
+    * @license GPL, http://www.gnu.org/licenses/gpl-2.0.html
 */
-
 defined('_JEXEC') or die('Restricted access');
 
 // Require the base controller
 require_once(JPATH_COMPONENT.DS.'controller.php');
-require_once(JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_rsmembership' . DS . 'helpers' . DS . 'dmanager.php');
+require_once(JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_jtour' . DS . 'helpers' . DS . 'jtour.php');
 
-RSMembershipHelper::readConfig();
+JTourHelper::readConfig();
 
+$input = JFactory::getApplication()->input;
 // See if this is a request for a specific controller
-$controller = JRequest::getCmd('controller');
+$controller = $input->get('controller');
 $controllers = array('memberships');
 if (!empty($controller) && in_array($controller, $controllers))
 {
 	require_once(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
-	$controller = 'RSMembershipController'.$controller;
-	$RSMembershipController = new $controller();
+	$controller = 'JTourController'.$controller;
+	$jtourController = new $controller();
 }
 else
-	$RSMembershipController = new RSMembershipController();
+	$jtourController = new jtourController();
 	
-$RSMembershipController->execute(JRequest::getCmd('task'));
+$jtourController->execute($input->get('task'));
 
 // Redirect if set
-$RSMembershipController->redirect();
-?>
+$jtourController->redirect();

@@ -32,9 +32,9 @@ function Joomla.submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_jtour&controller=tours&task=edit'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_jtour&controller=excursions&task=edit'); ?>" method="post" name="adminForm" id="adminForm">
     <?php
-        echo JHtml::_('tabs.start', 'tour-tabs-com_jtour_tour', array('useCookie'=>1));
+        echo JHtml::_('tabs.start', 'tour-tabs-com_jtour_excursions', array('useCookie'=>1));
         echo JHtml::_('tabs.panel', JText::_('JTOUR_TOUR_MAIN'), 'tour-main');
     ;?>
     <fieldset class="adminform">
@@ -51,6 +51,10 @@ function Joomla.submitbutton(pressbutton)
             <td class="key" width="200"><span class="hasTip" title="<?php echo JText::_('JTOUR_TOUR_DURATION_DESC'); ?>"><label for="duration"><?php echo JText::_('JTOUR_TOUR_DURATION'); ?></label></span></td>
             <td><?php echo $this->lists['duration']; ?>&nbsp;<?= JText::_('JTOUR_DAYS');?></td>
         </tr>
+            <tr>
+                <td class="key" width="200"><span class="hasTip" title="<?php echo JText::_('JTOUR_TOUR_WORKDAYS_DESC'); ?>"><label for="workdays"><?php echo JText::_('JTOUR_TOUR_WORKDAYS'); ?></label></span></td>
+                <td><?php echo $this->lists['workdays'];?></td>
+            </tr>
         <tr>
 			<td class="key" width="200"><span class="hasTip" title="<?php echo JText::_('PUBLISHED_DESC'); ?>"><label for="published"><?php echo JText::_('PUBLISHED'); ?></label></span></td>
 			<td><?php echo $this->lists['published']; ?></td>
@@ -62,64 +66,16 @@ function Joomla.submitbutton(pressbutton)
 	</table>
     </fieldset>
     <?php
-        echo JHtml::_('tabs.panel', JText::_('JTOUR_TOUR_EXCURSIONS'), 'tour-excursions');
-    ;?>
-    <div class="width-60 fltlft">
-    <fieldset class="adminForm">
-        <table class="adminTable" id="excursionsTable">
-            <tr align="center">
-                <th><?= JText::_('JTOUR_NAME');?></th>
-                <th><?= JText::_('JTOUR_DURATION');?></th>
-                <th><?= JText::_('JTOUR_REMOVE');?></th>
-            </tr>
-            <?php if(is_array($this->row->excursions)) :
-                    foreach ($this->row->excursions as $excursion) :
-                ;?>
-                <tr class="highlighted" align="center">
-                    <td>
-                        <?php echo $excursion->name;?>
-                        <input type="hidden" value="<?php echo $excursion->id;?>" name="excursions[]">
-                    </td>
-                    <td><?php echo $excursion->duration;?></td>
-                    <td>
-                        <span class="config_remove_btn" onclick="removeExcursion(this);"></span>
-                    </td>
-                </tr>
-            <?php endforeach;
-                endif;
-            ?>
-        </table>
-    </fieldset>
-    </div>
-    <div class="width-40 fltrt">
-        <fieldset class="adminform">
-            <div class="button2-left">
-                <div class="blank">
-                    <a class="modal" rel="{handler: 'iframe', size: {x: 800, y: 450}}" href="index.php?option=com_jtour&view=excursions&layout=modal&tmpl=component&8675aa960e3bad4312a832ac0caaac3f=1" title="<?= JText::_('JTOUR_ADD_EXCURSION_DESC');?>"><span class="btn_add"></span><?= JTEXT::_('JTOUR_ADD_EXCURSION');?></a>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="clr"></div>
-    <?php
-    echo JHtml::_('tabs.end');
+        echo JHtml::_('tabs.end');
     ?>
 <?php echo JHTML::_('form.token'); ?>
 <input type="hidden" name="option" value="com_jtour" />
-<input type="hidden" name="controller" value="tours" />
+<input type="hidden" name="controller" value="excursions" />
 <input type="hidden" name="task" value="edit" />
-<input type="hidden" name="view" value="tours" />
+<input type="hidden" name="view" value="excursions" />
 
 <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 </form>
-<script type="text/javascript">
-function removeExcursion(td)
-    {
-        if (!confirm ('<?= JText::_("JTOUR_ARE_YOU SURE");?>')) return;
-        tr = td.parentNode.parentNode;
-        tr.parentNode.removeChild(tr);
-    }
-</script>
 
 <?php
 //keep session alive while editing

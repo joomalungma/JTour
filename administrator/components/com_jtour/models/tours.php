@@ -104,9 +104,16 @@ class JTourModelTours extends JModel
 
 		$row =&JTable::getInstance('tours','JTourTable');
         $row->load($cid);
-
+        $row->excursions = $this->getExcursions($row->excursions);
 		return $row;
 	}
+    function getExcursions($excursions)
+    {
+        $this->_db->setQuery("SELECT `name`,`duration`,`id` FROM #__jtour_excursions WHERE id IN ($excursions)" );
+        $excursions = $this->_db->loadObjectList();
+        return $excursions;
+    }
+
 	
 	function getId()
 	{
@@ -155,11 +162,14 @@ class JTourModelTours extends JModel
             'currencyId' => 'string',
             'modified' => 'string',
             'published' => 'int',
-            'cid'       =>array(),
+            'cid'       =>'array',
+            'excursions' => 'array'
         );
         $post = $input->getArray($var);
 
         $post['description'] = JRequest::getVar('description', '', 'post', 'none', JREQUEST_ALLOWRAW);
+        $post['excursions'] = array_unique($post['excursions']);
+        $post['excursions'] = implode(',', $post['excursions']);
 
 		if (!$row->bind($post))
 			return JError::raiseWarning(500, $row->getError());

@@ -21,6 +21,7 @@ class JTourTableTours extends JTable
 	var $duration = 0;
 	var $price;
     var $currencyId;
+    var $excursions;
 
     var $created;
     var $modified;

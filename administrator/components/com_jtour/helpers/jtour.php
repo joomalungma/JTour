@@ -57,6 +57,11 @@ class JTourHelper
 		$version = new JVersion();
 		return $version->isCompatible('1.6.0');
 	}
+    static function getWeek()
+    {
+        $week = array(JText::_('SUNDAY'),JText::_('MONDAY'),JText::_('TUESDAY'),JText::_('WEDNESDAY'),JText::_('THURSDAY'),JText::_('FRIDAY'),JText::_('SATURDAY'));
+        return $week;
+    }
 	
 	function getCurrentDate($date=null)
 	{

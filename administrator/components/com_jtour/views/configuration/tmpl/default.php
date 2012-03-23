@@ -13,7 +13,7 @@ JHTML::_('behavior.tooltip');
 ?>
 <form action="index.php?option=com_jtour&view=configuration" method="post" name="adminForm" id="adminForm">
 <?php
-    echo JHtml::_('tabs.start', 'config-tabs-'.$this->component->option.'_configuration', array('useCookie'=>1));
+    echo JHtml::_('tabs.start', 'config-tabs-jtour_configuration', array('useCookie'=>1));
     echo JHtml::_('tabs.panel', JText::_('JTOUR_CONFIG_MAIN'), 'config-main');
 ?>
 <fieldset class="adminform">
